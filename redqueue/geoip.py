@@ -12,11 +12,9 @@ class GeoipTask(task.Task):
         super(GeoipTask, self).__init__(server)
 
     def on_data(self, data):
-        print 'resolve', data, type(data)
         url_back = data['url']
 
         def handle_response(response):
-            print 'response', response.code, response.body
             http_client.fetch(url_back, lambda x:x, body=response.body, method='POST')
 
         http_client = AsyncHTTPClient()
