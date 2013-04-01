@@ -17,6 +17,7 @@ from tornado.options import define, options
 from redqueue.server import Server
 from redqueue import task
 from redqueue import ws
+from redqueue import geoip
 
 define('host', default="0.0.0.0", help="The binded ip host")
 define('port', default=11211, type=int, help='The port to be listened')
@@ -24,6 +25,7 @@ define('jdir', default='journal', help='The directory to put journals')
 define('reliable', default='yes', help='Store data to log files, options: (no, yes, sync)')
 define('logfile', default='', help='Place where logging rows(info, debug, ...) are put.')
 define('ws_port', help='Websocket port')
+define('geoip_token', help='ipinfodb api key')
 
 
 def main():
@@ -41,6 +43,11 @@ def main():
         ws_server.listen(options.ws_port)
 
     server.start(options.host, options.port)
+
+    if options.geoip_token:
+        gt = geoip.GeoipTask(server, options.geoip_token)
+        gt.watch()
+
     task.run_all(server)
     ioloop.IOLoop.instance().start()
 
