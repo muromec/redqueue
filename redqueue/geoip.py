@@ -15,7 +15,11 @@ class GeoipTask(task.Task):
         url_back = data['url']
 
         def handle_response(response):
-            http_client.fetch(url_back, lambda x:x, body=response.body, method='POST')
+            if response.code != 200:
+                return
+
+            body = urllib.urlencode({"response": response.body})
+            http_client.fetch(url_back, lambda x:x, body=body, method='POST')
 
         http_client = AsyncHTTPClient()
         params = urllib.urlencode({
