@@ -19,7 +19,7 @@ from redqueue import task
 from redqueue import ws
 from redqueue import geoip
 
-define('host', default="0.0.0.0", help="The binded ip host")
+define('host', default="127.0.0.1", help="The binded ip host")
 define('port', default=11211, type=int, help='The port to be listened')
 define('jdir', default='journal', help='The directory to put journals')
 define('reliable', default='yes', help='Store data to log files, options: (no, yes, sync)')
