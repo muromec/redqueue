@@ -71,7 +71,11 @@ class URLFetchTask(Task):
             logging.info('Fetching url %s' % url)
             http_client = AsyncHTTPClient()
             if method == 'POST':
-                postdata = urllib.urlencode(data.get('body', {}))
+                body = data.get('body')
+                if isinstance(body, dict):
+                    postdata = urllib.urlencode(body)
+                else:
+                    postdata = body
             else:
                 postdata = None
             http_client.fetch(url, handle_response,
